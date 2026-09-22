@@ -1,0 +1,58 @@
+import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js";
+import { OrbitControls } from "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/controls/OrbitControls.js";
+import { EffectComposer } from "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/postprocessing/EffectComposer.js";
+import { RenderPass } from "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/postprocessing/RenderPass.js";
+import { UnrealBloomPass } from "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/postprocessing/UnrealBloomPass.js";
+import { OutputPass } from "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/postprocessing/OutputPass.js";
+
+/* =========================================================
+   THE UNKNOWN — 3D OBSERVATORY
+   Main Three.js engine
+   ========================================================= */
+
+const sceneContainer = document.getElementById("scene");
+
+const sceneTitle = document.getElementById("sceneTitle");
+const sceneText = document.getElementById("sceneText");
+const modeEl = document.getElementById("mode");
+const objectsEl = document.getElementById("objects");
+const fpsEl = document.getElementById("fps");
+
+const boot = document.getElementById("boot");
+const hud = document.getElementById("hud");
+const homeOverlay = document.getElementById("homeOverlay");
+
+const inspect = document.getElementById("inspect");
+const inspectName = document.getElementById("inspectName");
+const inspectText = document.getElementById("inspectText");
+const inspectFact = document.getElementById("inspectFact");
+const inspectTag = document.getElementById("inspectTag");
+
+const autoBtn = document.getElementById("auto");
+const resetBtn = document.getElementById("reset");
+const qualityBtn = document.getElementById("quality");
+
+const closeInspectBtn = document.getElementById("closeInspect");
+
+/* =========================================================
+   BASIC STATE
+   ========================================================= */
+
+let currentView = "home";
+let autoOrbit = false;
+let qualityMode = "auto";
+
+let interactiveObjects = [];
+let activeSceneObjects = [];
+
+let solarSystemGroup;
+let blackHoleGroup;
+let dnaGroup;
+let quantumGroup;
+let aiGroup;
+
+let clock = new THREE.Clock();
+let elapsed = 0;
+
+let frames = 0;
+let lastFPSUpdate = performance.now();
