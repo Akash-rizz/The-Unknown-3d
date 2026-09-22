@@ -1,0 +1,1391 @@
+:root {
+  --bg: #02040a;
+  --text: #edf1ff;
+  --muted: #8790a8;
+  --line: rgba(210, 220, 255, 0.16);
+  --glass: rgba(7, 11, 23, 0.62);
+  --accent: #a8b8ff;
+  --accent2: #ff8fd8;
+  --good: #86f7c0;
+
+  font-family:
+    "Space Grotesk",
+    system-ui,
+    sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+
+  background: var(--bg);
+  color: var(--text);
+}
+
+body {
+  font-family:
+    "Space Grotesk",
+    system-ui,
+    sans-serif;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+button:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+
+/* =========================================================
+   APP
+   ========================================================= */
+
+#app {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hidden-app {
+  opacity: 0;
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   THREE.JS SCENE
+   ========================================================= */
+
+#scene {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+#scene canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+
+/* =========================================================
+   BOOT SCREEN
+   ========================================================= */
+
+#boot {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: grid;
+  place-items: center;
+
+  align-content: center;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(30, 40, 90, 0.14),
+      transparent 35%
+    ),
+    #02040a;
+
+  color: var(--text);
+
+  text-align: center;
+
+  transition:
+    opacity 0.8s ease,
+    visibility 0.8s ease;
+}
+
+#boot.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.boot-orbit {
+  width: 58px;
+  height: 58px;
+
+  border:
+    1px solid
+    rgba(185, 200, 255, 0.2);
+
+  border-radius: 50%;
+
+  position: relative;
+
+  margin-bottom: 24px;
+
+  animation:
+    bootSpin 2s linear infinite;
+}
+
+.boot-orbit::before {
+  content: "";
+
+  position: absolute;
+  inset: 9px;
+
+  border:
+    1px solid
+    rgba(185, 200, 255, 0.4);
+
+  border-radius: 50%;
+}
+
+.boot-orbit span {
+  position: absolute;
+
+  width: 6px;
+  height: 6px;
+
+  left: 50%;
+  top: -3px;
+
+  border-radius: 50%;
+
+  background: white;
+
+  box-shadow:
+    0 0 18px white;
+}
+
+.boot-logo {
+  font-size: 20px;
+  font-weight: 700;
+
+  letter-spacing: 0.34em;
+}
+
+.boot-line {
+  width: 200px;
+  height: 1px;
+
+  margin: 17px auto;
+
+  background:
+    rgba(210, 220, 255, 0.12);
+}
+
+.boot-line span {
+  display: block;
+
+  width: 0;
+  height: 100%;
+
+  background: #edf2ff;
+
+  animation:
+    bootLoad 1.6s ease forwards;
+}
+
+.boot-meta {
+  font:
+    8px
+    "JetBrains Mono",
+    monospace;
+
+  color: #69728b;
+
+  letter-spacing: 0.18em;
+}
+
+.boot-retry {
+  margin-top: 18px;
+
+  border:
+    1px solid
+    var(--line);
+
+  background:
+    rgba(10, 14, 28, 0.7);
+
+  color: white;
+
+  padding: 9px 15px;
+
+  font:
+    8px
+    "JetBrains Mono",
+    monospace;
+
+  letter-spacing: 0.12em;
+
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   TOPBAR
+   ========================================================= */
+
+.topbar {
+  position: fixed;
+
+  z-index: 30;
+
+  top: 0;
+  left: 0;
+  right: 0;
+
+  min-height: 78px;
+
+  padding:
+    16px 22px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(2, 4, 10, 0.82),
+      rgba(2, 4, 10, 0)
+    );
+
+  backdrop-filter: blur(8px);
+}
+
+
+/* =========================================================
+   BRAND
+   ========================================================= */
+
+.brand {
+  border: 0;
+  background: transparent;
+
+  display: grid;
+
+  grid-template-columns:
+    auto auto;
+
+  grid-template-rows:
+    auto auto;
+
+  column-gap: 9px;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  padding: 0;
+}
+
+.brand-mark {
+  grid-row: 1 / 3;
+
+  font-size: 30px;
+
+  line-height: 1;
+
+  color: #cbd4ff;
+}
+
+.brand span:nth-child(2) {
+  font-weight: 700;
+
+  letter-spacing: 0.18em;
+
+  font-size: 12px;
+}
+
+.brand small {
+  margin-top: 4px;
+
+  color: #707991;
+
+  font:
+    9px
+    "JetBrains Mono",
+    monospace;
+
+  letter-spacing: 0.18em;
+}
+
+
+/* =========================================================
+   DESKTOP NAV
+   ========================================================= */
+
+#nav {
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+}
+
+#nav button,
+.menu {
+  border:
+    1px solid transparent;
+
+  border-radius: 999px;
+
+  background:
+    rgba(5, 8, 17, 0.45);
+
+  color: #8d95aa;
+
+  padding:
+    9px 12px;
+
+  font:
+    600 9px
+    "JetBrains Mono",
+    monospace;
+
+  letter-spacing: 0.08em;
+
+  cursor: pointer;
+
+  transition:
+    0.2s ease;
+}
+
+#nav button:hover,
+#nav button.active {
+  color: white;
+
+  border-color:
+    var(--line);
+
+  background:
+    rgba(12, 17, 32, 0.8);
+}
+
+.menu {
+  display: none;
+
+  font-size: 18px;
+
+  padding:
+    8px 11px;
+}
+
+
+/* =========================================================
+   PANELS
+   ========================================================= */
+
+.panel {
+  position: fixed;
+
+  z-index: 15;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(7, 11, 23, 0.66),
+      rgba(7, 9, 18, 0.18)
+    );
+
+  border:
+    1px solid
+    rgba(210, 220, 255, 0.13);
+
+  box-shadow:
+    0 20px 80px
+    rgba(0, 0, 0, 0.28);
+
+  backdrop-filter:
+    blur(12px);
+}
+
+
+/* =========================================================
+   LEFT PANEL
+   ========================================================= */
+
+.left-panel {
+  left: 22px;
+  top: 112px;
+
+  width: 290px;
+
+  padding: 18px;
+}
+
+.left-panel h1 {
+  margin:
+    7px 0 8px;
+
+  font-size: 26px;
+
+  letter-spacing: 0.08em;
+}
+
+.left-panel p {
+  margin: 0;
+
+  color: #a5acc0;
+
+  font-size: 12px;
+
+  line-height: 1.6;
+}
+
+.eyebrow {
+  font:
+    600 8px
+    "JetBrains Mono",
+    monospace;
+
+  color: #78819b;
+
+  letter-spacing: 0.19em;
+}
+
+
+/* =========================================================
+   READOUTS
+   ========================================================= */
+
+.readouts {
+  margin-top: 18px;
+
+  border-top:
+    1px solid
+    var(--line);
+}
+
+.readouts > div {
+  display: flex;
+
+  justify-content: space-between;
+
+  gap: 12px;
+
+  padding:
+    9px 0;
+
+  border-bottom:
+    1px solid
+    rgba(210, 220, 255, 0.08);
+
+  font:
+    8px
+    "JetBrains Mono",
+    monospace;
+}
+
+.readouts span {
+  color: #666f85;
+}
+
+.readouts b {
+  font-weight: 600;
+
+  color: #d9def0;
+}
+
+.readouts .live {
+  color: var(--good);
+}
+
+
+/* =========================================================
+   RIGHT PANEL
+   ========================================================= */
+
+.right-panel {
+  right: 22px;
+  top: 112px;
+
+  padding: 7px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 6px;
+}
+
+.tool {
+  border:
+    1px solid transparent;
+
+  background:
+    rgba(8, 12, 24, 0.45);
+
+  color: #8992a8;
+
+  padding:
+    9px 11px;
+
+  min-width: 132px;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  font:
+    8px
+    "JetBrains Mono",
+    monospace;
+
+  letter-spacing: 0.1em;
+}
+
+.tool:hover {
+  color: white;
+
+  border-color:
+    var(--line);
+
+  background:
+    rgba(16, 21, 40, 0.8);
+}
+
+.tool b {
+  float: right;
+
+  color: #dfe4f7;
+}
+
+
+/* =========================================================
+   HUD
+   ========================================================= */
+
+.hud-grid {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 2;
+
+  pointer-events: none;
+
+  background-image:
+    linear-gradient(
+      rgba(160, 180, 255, 0.018)
+      1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(160, 180, 255, 0.018)
+      1px,
+      transparent 1px
+    );
+
+  background-size:
+    70px 70px;
+
+  mask-image:
+    linear-gradient(
+      to bottom,
+      transparent,
+      black 15%,
+      black 85%,
+      transparent
+    );
+}
+
+.scanline {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 3;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      transparent 49.8%,
+      rgba(255,255,255,0.025) 50%,
+      transparent 50.2%
+    );
+
+  background-size:
+    100% 6px;
+
+  opacity: 0.25;
+}
+
+
+/* =========================================================
+   HOME OVERLAY
+   ========================================================= */
+
+.overlay {
+  position: fixed;
+
+  z-index: 10;
+
+  left: 0;
+  right: 0;
+
+  bottom: 54px;
+
+  display: flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    flex-end;
+
+  gap: 30px;
+
+  padding:
+    0 22px;
+
+  pointer-events: none;
+}
+
+.hero {
+  max-width: 660px;
+
+  pointer-events: auto;
+}
+
+.hero h2 {
+  margin:
+    10px 0 16px;
+
+  font-size:
+    clamp(40px, 6vw, 78px);
+
+  line-height:
+    0.92;
+
+  letter-spacing:
+    -0.055em;
+
+  font-weight: 700;
+
+  text-shadow:
+    0 10px 40px
+    rgba(0,0,0,0.5);
+}
+
+.hero h2 i {
+  color: #8f9eff;
+
+  font-style: normal;
+}
+
+.hero p {
+  max-width: 560px;
+
+  color: #aeb5c7;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+}
+
+.hero-actions {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  margin-top: 18px;
+}
+
+.primary,
+.ghost {
+  cursor: pointer;
+
+  border-radius: 2px;
+
+  padding:
+    12px 15px;
+
+  font:
+    700 9px
+    "JetBrains Mono",
+    monospace;
+
+  letter-spacing: 0.09em;
+}
+
+.primary {
+  background: #eef2ff;
+
+  color: #050710;
+
+  border:
+    1px solid #eef2ff;
+}
+
+.primary span {
+  margin-left: 15px;
+}
+
+.ghost {
+  background:
+    rgba(4, 7, 15, 0.4);
+
+  color: #dfe5ff;
+
+  border:
+    1px solid
+    var(--line);
+}
+
+
+/* =========================================================
+   QUICK BUTTONS
+   ========================================================= */
+
+.quick {
+  width:
+    min(520px, 46vw);
+
+  pointer-events: auto;
+
+  display: grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap: 5px;
+}
+
+.quick button {
+  border:
+    1px solid
+    rgba(210,220,255,0.12);
+
+  background:
+    rgba(4,7,16,0.48);
+
+  backdrop-filter:
+    blur(10px);
+
+  display: grid;
+
+  grid-template-columns:
+    34px 1fr auto;
+
+  align-items: center;
+
+  gap: 7px;
+
+  padding:
+    13px 12px;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    0.2s ease;
+}
+
+.quick button:hover {
+  background:
+    rgba(19,24,44,0.82);
+
+  border-color:
+    rgba(210,220,255,0.3);
+}
+
+.quick b {
+  font:
+    8px
+    "JetBrains Mono",
+    monospace;
+
+  color: #68718a;
+}
+
+.quick span {
+  font-size: 10px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.07em;
+}
+
+.quick em {
+  font:
+    7px
+    "JetBrains Mono",
+    monospace;
+
+  color: #69728b;
+
+  font-style: normal;
+}
+
+
+/* =========================================================
+   INFO STRIP
+   ========================================================= */
+
+.info-strip {
+  position: fixed;
+
+  z-index: 15;
+
+  left: 22px;
+  bottom: 60px;
+
+  display: flex;
+
+  border:
+    1px solid
+    var(--line);
+
+  background:
+    rgba(5,8,17,0.72);
+
+  backdrop-filter:
+    blur(10px);
+}
+
+.info-strip > div {
+  padding:
+    8px 12px;
+
+  border-right:
+    1px solid
+    var(--line);
+}
+
+.info-strip > div:last-child {
+  border-right: 0;
+}
+
+.info-strip span {
+  display: block;
+
+  font:
+    7px
+    "JetBrains Mono",
+    monospace;
+
+  color: #626b80;
+}
+
+.info-strip b {
+  font:
+    9px
+    "JetBrains Mono",
+    monospace;
+}
+
+
+/* =========================================================
+   INSPECT PANEL
+   ========================================================= */
+
+.inspect {
+  position: fixed;
+
+  z-index: 25;
+
+  right: 22px;
+  bottom: 58px;
+
+  width:
+    min(340px, calc(100vw - 44px));
+
+  padding: 18px;
+
+  background:
+    rgba(5,8,17,0.9);
+
+  border:
+    1px solid
+    rgba(210,220,255,0.2);
+
+  backdrop-filter:
+    blur(16px);
+
+  box-shadow:
+    0 20px 90px
+    rgba(0,0,0,0.5);
+}
+
+.inspect h3 {
+  font-size: 22px;
+
+  margin:
+    8px 0;
+}
+
+.inspect p {
+  font-size: 12px;
+
+  line-height: 1.6;
+
+  color: #aeb5c7;
+}
+
+.inspect .close {
+  position: absolute;
+
+  right: 8px;
+  top: 6px;
+
+  border: 0;
+
+  background: transparent;
+
+  color: #7f879b;
+
+  font-size: 22px;
+
+  cursor: pointer;
+}
+
+.fact {
+  border-top:
+    1px solid
+    var(--line);
+
+  padding-top: 10px;
+
+  margin-top: 12px;
+}
+
+.fact span {
+  display: block;
+
+  font:
+    7px
+    "JetBrains Mono",
+    monospace;
+
+  color: #666f85;
+
+  margin-bottom: 5px;
+}
+
+.fact strong {
+  font-size: 10px;
+
+  line-height: 1.5;
+
+  font-weight: 500;
+
+  color: #dfe4f4;
+}
+
+
+/* =========================================================
+   HINT
+   ========================================================= */
+
+#hint {
+  position: fixed;
+
+  z-index: 12;
+
+  left: 50%;
+
+  bottom: 19px;
+
+  transform:
+    translateX(-50%);
+
+  color: #596277;
+
+  font:
+    7px
+    "JetBrains Mono",
+    monospace;
+
+  letter-spacing: 0.1em;
+
+  white-space: nowrap;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   MOBILE MENU
+   ========================================================= */
+
+.mobile-menu {
+  position: fixed;
+
+  z-index: 40;
+
+  inset: 0;
+
+  background:
+    rgba(2,4,10,0.95);
+
+  backdrop-filter:
+    blur(20px);
+}
+
+.mobile-menu-inner {
+  padding:
+    90px 24px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+.mobile-menu button {
+  background: transparent;
+
+  border: 0;
+
+  border-bottom:
+    1px solid
+    var(--line);
+
+  padding:
+    16px 0;
+
+  text-align: left;
+
+  font-size: 22px;
+
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+footer {
+  position: fixed;
+
+  z-index: 12;
+
+  left: 22px;
+  right: 22px;
+
+  bottom: 18px;
+
+  display: flex;
+
+  justify-content:
+    space-between;
+
+  pointer-events: none;
+
+  color: #596277;
+
+  font:
+    7px
+    "JetBrains Mono",
+    monospace;
+
+  letter-spacing: 0.1em;
+}
+
+
+/* =========================================================
+   NOSCRIPT
+   ========================================================= */
+
+.noscript {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 10000;
+
+  display: grid;
+
+  place-items: center;
+
+  padding: 30px;
+
+  text-align: center;
+
+  background: #02040a;
+
+  color: white;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+
+@keyframes bootSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes bootLoad {
+  to {
+    width: 100%;
+  }
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  #nav {
+    display: none;
+  }
+
+  .menu {
+    display: block;
+  }
+
+  .left-panel {
+    top: 88px;
+    left: 12px;
+
+    width: 245px;
+
+    padding: 13px;
+  }
+
+  .left-panel h1 {
+    font-size: 20px;
+  }
+
+  .left-panel p {
+    font-size: 10px;
+  }
+
+  .right-panel {
+    top: 88px;
+    right: 12px;
+  }
+
+  .tool {
+    min-width: 110px;
+
+    padding: 8px;
+
+    font-size: 7px;
+  }
+
+  .overlay {
+    padding:
+      0 14px 45px;
+
+    display: block;
+  }
+
+  .hero h2 {
+    font-size: 45px;
+  }
+
+  .hero p {
+    font-size: 11px;
+    max-width: 430px;
+  }
+
+  .quick {
+    width: 100%;
+    margin-top: 18px;
+  }
+
+  .quick button {
+    padding: 10px;
+  }
+
+  footer {
+    left: 12px;
+    right: 12px;
+    bottom: 10px;
+  }
+
+}
+
+
+/* =========================================================
+   PHONE
+   ========================================================= */
+
+@media (max-width: 560px) {
+
+  .topbar {
+    padding:
+      14px 12px;
+  }
+
+  .left-panel {
+    width:
+      calc(100vw - 24px);
+
+    top: 76px;
+
+    background:
+      linear-gradient(
+        180deg,
+        rgba(5,8,17,0.7),
+        rgba(5,8,17,0.05)
+      );
+
+    border-color: transparent;
+
+    box-shadow: none;
+
+    backdrop-filter: none;
+  }
+
+  .left-panel p {
+    max-width: 310px;
+  }
+
+  .readouts {
+    display: none;
+  }
+
+  .right-panel {
+    top: auto;
+    bottom: 45px;
+    right: 12px;
+
+    display: grid;
+
+    grid-template-columns:
+      1fr 1fr;
+
+    gap: 3px;
+
+    background: transparent;
+
+    border: 0;
+
+    box-shadow: none;
+
+    padding: 0;
+  }
+
+  .tool {
+    min-width: 84px;
+
+    font-size: 6px;
+
+    background:
+      rgba(4,7,15,0.72);
+  }
+
+  .overlay {
+    bottom: 0;
+
+    padding:
+      0 12px 82px;
+  }
+
+  .hero h2 {
+    font-size: 39px;
+  }
+
+  .hero p {
+    font-size: 10px;
+  }
+
+  .hero-actions {
+    margin-top: 10px;
+  }
+
+  .primary,
+  .ghost {
+    padding:
+      10px 11px;
+
+    font-size: 7px;
+  }
+
+  .quick {
+    grid-template-columns:
+      1fr 1fr;
+
+    margin-top: 12px;
+  }
+
+  .quick button {
+    grid-template-columns:
+      25px 1fr;
+
+    min-height: 42px;
+  }
+
+  .quick em {
+    display: none;
+  }
+
+  .info-strip {
+    display: none;
+  }
+
+  .inspect {
+    right: 12px;
+    bottom: 100px;
+  }
+
+  .brand span:nth-child(2) {
+    font-size: 10px;
+  }
+
+  .brand small {
+    font-size: 7px;
+  }
+
+  #hint {
+    display: none;
+  }
+
+  footer {
+    font-size: 6px;
+  }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+
+    transition-duration: 0.01ms !important;
+  }
+
+}
